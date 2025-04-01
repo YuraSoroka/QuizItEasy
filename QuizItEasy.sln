@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizItEasy.Application", "s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizItEasy.Infrastructure", "src\QuizItEasy.Infrastructure\QuizItEasy.Infrastructure.csproj", "{81B57763-FFDC-4BE8-96E6-24B5FAB338EE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{5B5BEBEA-8775-47B3-B95E-371ECA16E2D1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
