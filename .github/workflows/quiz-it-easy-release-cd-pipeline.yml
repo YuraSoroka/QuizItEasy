@@ -33,4 +33,4 @@ jobs:
         run: dotnet test --no-build --verbosity normal
 
       - name: Login to Azure Container Registry (ACR)
-        run: echo "${{ secrets.ACR_PASSWORD }}" | docker login ${{ env.ACR_NAME }}.azurecr.io -u ${{ secrets.ACR_USERNAME }} --password-stdin
+        run: echo "${{ secrets.ACR_PASSWORD }}" | docker login ${{ secrets.ACR_NAME }}.azurecr.io -u ${{ secrets.ACR_USERNAME }} --password-stdin
