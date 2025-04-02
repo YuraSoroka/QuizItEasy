@@ -32,9 +32,6 @@ jobs:
       - name: Run test
         run: dotnet test --no-build --verbosity normal
 
-      - name: Login to Azure Container Registry (ACR)
-        run: echo "${{ secrets.ACR_PASSWORD }}" | docker login ${{ secrets.ACR_NAME }}.azurecr.io -u ${{ secrets.ACR_USERNAME }} --password-stdin
-
       - name: Azure Container Registry Login
         uses: Azure/docker-login@v1
         with:
@@ -44,4 +41,7 @@ jobs:
           password: ${{ secrets.ACR_PASSWORD }}
           # Container registry server url
           login-server: quiziteasy.azurecr.io
-          
+
+      - name: Get the tag name
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
