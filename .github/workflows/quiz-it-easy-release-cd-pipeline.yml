@@ -36,7 +36,7 @@ jobs:
         run: dotnet test --no-build --verbosity normal
 
   containerize:
-    if: success()
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
@@ -50,6 +50,5 @@ jobs:
       - name: Build and push docker image to ACR
         if: success()
         run: |
-          docker build -f src/QuizItEasy.API/Dockerfile . -t ${{ secrets.ACR_LOGIN_SERVER }}/${{ env.REPOSITORY_NAME}}:${{ github.sha }}
-          docker push ${{ secrets.ACR_LOGIN_SERVER }}/${{ env.REPOSITORY_NAME}}:${{ github.sha }}
-
+          docker build -f src/QuizItEasy.API/Dockerfile . -t ${{ secrets.ACR_LOGIN_SERVER }}/${{env.REPOSITORY_NAME}}:${{ github.sha }}
+          docker push ${{ secrets.ACR_LOGIN_SERVER }}/${{env.REPOSITORY_NAME}}:${{ github.sha }}
