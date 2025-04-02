@@ -7,6 +7,9 @@ on:
   push:
     branches: [release, main]
 
+env:
+  REPOSITORY_NAME: quiz-it-easy
+
 jobs:
   build:
 
@@ -32,16 +35,21 @@ jobs:
       - name: Run test
         run: dotnet test --no-build --verbosity normal
 
+  containerize:
+    if: success()
+    runs-on: ubuntu-latest
+
+    steps:
       - name: 'Login to ACR'
-        if: success()
         uses: azure/docker-login@v1
         with:
           login-server: ${{ secrets.ACR_LOGIN_SERVER }}
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
-          
+        
       - name: Build and push docker image to ACR
         if: success()
         run: |
-          docker build -f src/QuizItEasy.API/Dockerfile . -t ${{ secrets.ACR_LOGIN_SERVER }}/sampleapp:${{ github.sha }}
-          docker push ${{ secrets.ACR_LOGIN_SERVER }}/sampleapp:${{ github.sha }}
+          docker build -f src/QuizItEasy.API/Dockerfile . -t ${{ secrets.ACR_LOGIN_SERVER }}/${{ env.REPOSITORY_NAME}}:${{ github.sha }}
+          docker push ${{ secrets.ACR_LOGIN_SERVER }}/${{ env.REPOSITORY_NAME}}:${{ github.sha }}
+
