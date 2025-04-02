@@ -51,5 +51,5 @@ jobs:
       - name: Build and push docker image to ACR
         if: success()
         run: |
-          docker build -f src/QuizItEasy.API/Dockerfile . -t ${{ secrets.ACR_LOGIN_SERVER }}/sampleapp:${{ github.sha }}
-          docker push ${{ secrets.ACR_LOGIN_SERVER }}/sampleapp:${{ github.sha }}
+          docker build -f src/QuizItEasy.API/Dockerfile . -t ${{ secrets.ACR_LOGIN_SERVER }}/${{env.REPOSITORY_NAME}}:${{ github.sha }}
+          docker push ${{ secrets.ACR_LOGIN_SERVER }}/${{env.REPOSITORY_NAME}}:${{ github.sha }}
