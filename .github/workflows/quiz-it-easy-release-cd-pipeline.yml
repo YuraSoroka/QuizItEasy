@@ -33,7 +33,7 @@ jobs:
         run: dotnet test --no-build --verbosity normal
 
       - name: 'Build and push docker image to ACR'
-        if: ssuccess()
+        if: success()
         uses: azure/docker-login@v1
         with:
           login-server: ${{ secrets.ACR_LOGIN_SERVER }}
