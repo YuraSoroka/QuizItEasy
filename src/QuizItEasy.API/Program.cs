@@ -1,5 +1,7 @@
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using QuizItEasy.API;
+using QuizItEasy.API.Common;
 using QuizItEasy.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +12,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddInfrasatructure(builder.Configuration);
+
+builder.Services.AddEndpoints(AssemblyReference.Assembly);
 
 var app = builder.Build();
 
@@ -46,6 +50,8 @@ app.MapHealthChecks("/health", new HealthCheckOptions
 {
     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
 });
+
+app.MapEndpoints();
 
 app.Run();
 
