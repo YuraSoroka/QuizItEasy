@@ -12,10 +12,10 @@ public sealed class CreateSingleSelect : IEndpoint
         app.MapPost("single-select", (IMongoDbContext mongoDbContext) =>
             {
                 var collection = mongoDbContext.GetCollection<Question>("AZ-204");
-                
-                IEnumerable<Answer> answers = 
+
+                IEnumerable<Answer> answers =
                 [
-                    Answer.CorrectOption("True"), 
+                    Answer.CorrectOption("True"),
                     Answer.WrongOption("False")
                 ];
                 collection.InsertOne(SingleSelect.Create(answers, "Test question"));

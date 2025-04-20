@@ -15,7 +15,7 @@ public sealed class Answer
     {
         return new Answer(value: value, isCorrect: true);
     }
-    
+
     public static Answer WrongOption(string value)
     {
         return new Answer(value: value, isCorrect: false);

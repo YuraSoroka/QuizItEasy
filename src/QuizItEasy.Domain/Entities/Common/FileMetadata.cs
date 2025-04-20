@@ -14,10 +14,10 @@ public class FileMetadata
         FileExtension = fileExtension;
         StorageName = Guid.CreateVersion7();
     }
-    
+
     public static FileMetadata Create(
-        string untrustedName, 
-        long byteSize, 
+        string untrustedName,
+        long byteSize,
         string fileExtension)
     {
         return new FileMetadata(untrustedName, byteSize, fileExtension);
