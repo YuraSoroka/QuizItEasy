@@ -10,7 +10,7 @@ namespace QuizItEasy.Infrastructure;
 
 public static class ConfigureServices
 {
-    public static void AddInfrasatructure(this IServiceCollection services, IConfiguration configuration)
+    public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IMongoDbContext, MongoDbContext>();
 
