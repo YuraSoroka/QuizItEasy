@@ -11,13 +11,9 @@ public sealed class Answer
         Value = value;
     }
 
-    public static Answer CorrectOption(string value)
+    public static Answer CreateOption(string value, bool isCorrect)
     {
-        return new Answer(value: value, isCorrect: true);
+        return new Answer(value: value, isCorrect: isCorrect);
     }
 
-    public static Answer WrongOption(string value)
-    {
-        return new Answer(value: value, isCorrect: false);
-    }
 }
