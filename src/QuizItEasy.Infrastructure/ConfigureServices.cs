@@ -45,11 +45,15 @@ public static class ConfigureServices
         {
             classMap.MapIdProperty(e => e.Id);
             classMap.MapMember(e => e.Text);
+            classMap.MapMember(e => e.Image);
         });
 
         BsonClassMap.RegisterClassMap<SingleSelect>(classMap =>
         {
+            classMap.AutoMap();
             classMap.MapMember(e => e.Answers);
+            classMap.SetDiscriminator(nameof(SingleSelect));
+            classMap.MapCreator(u => SingleSelect.Create(u.Answers, u.Text, u.Image));
         });
     }
 }
