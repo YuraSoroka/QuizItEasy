@@ -1,7 +1,8 @@
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using QuizItEasy.API.Common.Abstractions;
 
-namespace QuizItEasy.API.Common;
+namespace QuizItEasy.API.Common.Extensions;
 
 public static class EndpointExtensions
 {

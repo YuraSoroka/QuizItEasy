@@ -1,6 +1,6 @@
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using QuizItEasy.API.Common;
+using QuizItEasy.API.Common.Extensions;
 using QuizItEasy.Application;
 using QuizItEasy.Infrastructure;
 

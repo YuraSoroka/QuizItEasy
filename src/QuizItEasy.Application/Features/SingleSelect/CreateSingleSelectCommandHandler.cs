@@ -1,5 +1,6 @@
-using MediatR;
 using QuizItEasy.Application.Common.Abstractions;
+using QuizItEasy.Application.Common.Messaging;
+using QuizItEasy.Domain.Common;
 using QuizItEasy.Domain.Entities.Common;
 using QuizItEasy.Domain.Entities.Questions;
 using SingleSelectQuestion = QuizItEasy.Domain.Entities.Questions.SingleSelect;
@@ -7,18 +8,19 @@ using SingleSelectQuestion = QuizItEasy.Domain.Entities.Questions.SingleSelect;
 namespace QuizItEasy.Application.Features.SingleSelect;
 
 public class CreateSingleSelectCommandHandler(IMongoDbContext mongoDbContext)
-    : IRequestHandler<CreateSingleSelectCommand>
+    : ICommandHandler<CreateSingleSelectCommand>
 {
-    public Task Handle(CreateSingleSelectCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(CreateSingleSelectCommand request, CancellationToken cancellationToken)
     {
         var collection = mongoDbContext.GetCollection<Question>("AZ-204");
 
-        IEnumerable<Answer> answers = request.Answers
+        var answers = request.Answers
             .Select(ar => Answer.CreateOption(ar.Value, ar.IsCorrect));
 
-        return collection.InsertOneAsync(
+        await collection.InsertOneAsync(
             SingleSelectQuestion.Create(answers, request.QuestionText),
             cancellationToken: cancellationToken);
 
+        return Result.Success();
     }
 }
