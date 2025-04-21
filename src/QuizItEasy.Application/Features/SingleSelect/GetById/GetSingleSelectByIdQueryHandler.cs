@@ -8,7 +8,7 @@ using SingleSelectQuestion = QuizItEasy.Domain.Entities.Questions.SingleSelect;
 
 namespace QuizItEasy.Application.Features.SingleSelect.GetById;
 
-public class GetSingleSelectByIdQueryHandler(IMongoDbContext mongoDbContext, IMapper mapper) 
+public class GetSingleSelectByIdQueryHandler(IMongoDbContext mongoDbContext, IMapper mapper)
     : IQueryHandler<GetSingleSelectByIdQuery, SingleSelectResponse>
 {
     public async Task<Result<SingleSelectResponse>> Handle(GetSingleSelectByIdQuery request, CancellationToken cancellationToken)
@@ -17,7 +17,7 @@ public class GetSingleSelectByIdQueryHandler(IMongoDbContext mongoDbContext, IMa
 
         FilterDefinition<SingleSelectQuestion> filter = Builders<SingleSelectQuestion>.Filter
             .Eq(q => q.Id, request.Id);
-        
+
         var singleSelect = await collection
             .Find(filter)
             .SingleAsync(cancellationToken);

@@ -16,9 +16,9 @@ public class CreateSingleSelectCommandHandler(IMongoDbContext mongoDbContext)
 
         var answers = request.Answers
             .Select(ar => Answer.CreateOption(ar.Value, ar.IsCorrect));
-        
+
         var singleSelectQuestion = SingleSelectQuestion.Create(answers, request.QuestionText);
-        
+
         await collection.InsertOneAsync(
             singleSelectQuestion,
             cancellationToken: cancellationToken);
