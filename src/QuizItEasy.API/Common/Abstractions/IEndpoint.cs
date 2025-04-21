@@ -1,4 +1,4 @@
-namespace QuizItEasy.API.Common;
+namespace QuizItEasy.API.Common.Abstractions;
 
 public interface IEndpoint
 {
