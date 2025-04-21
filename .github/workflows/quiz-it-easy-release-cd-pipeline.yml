@@ -5,7 +5,7 @@ name: Quiz IT Easy CD Release
 
 on:
   push:
-    branches: [release, main]
+    branches: [release]
 
 env:
   REPOSITORY_NAME: quiz-it-easy
