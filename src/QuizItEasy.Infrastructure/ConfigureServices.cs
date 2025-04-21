@@ -43,8 +43,8 @@ public static class ConfigureServices
     {
         BsonClassMap.RegisterClassMap<Question>(classMap =>
         {
-            classMap
-                .MapIdProperty(e => e.Id);
+            classMap.MapIdProperty(e => e.Id);
+            classMap.MapMember(e => e.Text);
         });
 
         BsonClassMap.RegisterClassMap<SingleSelect>(classMap =>
