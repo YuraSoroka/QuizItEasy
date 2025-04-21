@@ -8,5 +8,5 @@ public sealed record CreateSingleSelectCommand(
     ) : IRequest;
 
 public sealed record CreateSingleSelectAnswerRequest(
-    string Value, 
+    string Value,
     bool IsCorrect);

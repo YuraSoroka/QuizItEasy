@@ -1,8 +1,8 @@
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using QuizItEasy.API.Common;
-using QuizItEasy.Infrastructure;
 using QuizItEasy.Application;
+using QuizItEasy.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 

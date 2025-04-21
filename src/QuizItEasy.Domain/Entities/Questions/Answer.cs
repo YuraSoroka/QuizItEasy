@@ -15,5 +15,5 @@ public sealed class Answer
     {
         return new Answer(value: value, isCorrect: isCorrect);
     }
-    
+
 }
