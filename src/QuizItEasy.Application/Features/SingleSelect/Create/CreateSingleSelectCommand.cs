@@ -30,7 +30,7 @@ public class CreateSingleSelectCommandHandler(IMongoDbContext mongoDbContext)
             .Select(ar => Answer.CreateOption(ar.Value, ar.IsCorrect));
 
         var singleSelectQuestion = SingleSelectQuestion.Create(
-            answers, 
+            answers,
             request.QuestionText,
             ObjectId.Parse(request.QuizCollectionId));
 

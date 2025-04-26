@@ -2,7 +2,7 @@ using MongoDB.Bson;
 
 namespace QuizItEasy.Domain.Entities.Common;
 
-public abstract class Question(string text, ObjectId quizCollectionId, FileMetadata? image) 
+public abstract class Question(string text, ObjectId quizCollectionId, FileMetadata? image)
     : AggregateRoot
 {
     public ObjectId QuizCollectionId { get; protected set; } = quizCollectionId;

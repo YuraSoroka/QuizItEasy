@@ -26,9 +26,9 @@ public class SingleSelect : Question
         FileMetadata? image = null)
     {
         return new SingleSelect(
-            answers, 
-            text, 
-            quizCollectionId, 
+            answers,
+            text,
+            quizCollectionId,
             image);
     }
 }
