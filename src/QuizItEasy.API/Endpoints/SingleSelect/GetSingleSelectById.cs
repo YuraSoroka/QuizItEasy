@@ -1,5 +1,4 @@
 using MediatR;
-using MongoDB.Bson;
 using QuizItEasy.API.Common;
 using QuizItEasy.API.Common.Abstractions;
 using QuizItEasy.API.Common.Results;
@@ -11,7 +10,7 @@ public sealed class GetSingleSelectById : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("single-selects/{id}", async (ObjectId id, ISender sender) =>
+        app.MapGet("single-selects/{id}", async (string id, ISender sender) =>
             {
                 var result = await sender.Send(new GetSingleSelectByIdQuery(id));
                 return result.Match(Results.Ok, ApiResults.Problem);

@@ -1,3 +1,4 @@
+using MongoDB.Bson;
 using QuizItEasy.Domain.Entities.Common;
 
 namespace QuizItEasy.Domain.Entities.Questions;
@@ -11,8 +12,9 @@ public class SingleSelect : Question
     private SingleSelect(
         IEnumerable<Answer> answers,
         string text,
+        ObjectId quizCollectionId,
         FileMetadata? image)
-        : base(text, image)
+        : base(text, quizCollectionId, image)
     {
         _answers.AddRange(answers);
     }
@@ -20,8 +22,13 @@ public class SingleSelect : Question
     public static SingleSelect Create(
         IEnumerable<Answer> answers,
         string text,
+        ObjectId quizCollectionId,
         FileMetadata? image = null)
     {
-        return new SingleSelect(answers, text, image);
+        return new SingleSelect(
+            answers,
+            text,
+            quizCollectionId,
+            image);
     }
 }
