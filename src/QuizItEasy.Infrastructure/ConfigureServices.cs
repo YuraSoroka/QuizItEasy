@@ -1,11 +1,15 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.IdGenerators;
+using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 using QuizItEasy.Application.Common.Abstractions;
 using QuizItEasy.Domain.Entities.Common;
 using QuizItEasy.Domain.Entities.Questions;
+using QuizItEasy.Domain.Entities.QuizCollections;
 using QuizItEasy.Infrastructure.Persistence;
 
 namespace QuizItEasy.Infrastructure;
@@ -50,7 +54,7 @@ public static class ConfigureServices
 
         BsonClassMap.RegisterClassMap<Question>(classMap =>
         {
-            classMap.MapIdProperty(e => e.Id);
+            classMap.AutoMap();
             classMap.MapMember(e => e.Text);
             classMap.MapMember(e => e.Image);
         });
@@ -60,7 +64,15 @@ public static class ConfigureServices
             classMap.AutoMap();
             classMap.MapMember(e => e.Answers);
             classMap.SetDiscriminator(nameof(SingleSelect));
-            classMap.MapCreator(u => SingleSelect.Create(u.Answers, u.Text, u.Image));
+            classMap.MapCreator(u => SingleSelect.Create(u.Answers, u.Text, u.QuizCollectionId ,u.Image));
+        });
+        
+        BsonClassMap.RegisterClassMap<QuizCollection>(classMap =>
+        {
+            classMap.AutoMap();
         });
     }
 }
+
+
+
