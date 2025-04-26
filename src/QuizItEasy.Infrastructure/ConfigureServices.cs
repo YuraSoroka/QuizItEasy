@@ -41,6 +41,13 @@ public static class ConfigureServices
 
     private static void RegisterEntitiesMongoConfiguration()
     {
+
+        BsonClassMap.RegisterClassMap<Entity>(classMap =>
+        {
+            classMap.AutoMap();
+            classMap.MapIdMember(e => e.Id);
+        });
+
         BsonClassMap.RegisterClassMap<Question>(classMap =>
         {
             classMap.MapIdProperty(e => e.Id);
