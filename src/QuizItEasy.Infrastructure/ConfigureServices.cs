@@ -7,6 +7,7 @@ using MongoDB.Bson.Serialization.IdGenerators;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 using QuizItEasy.Application.Common.Abstractions;
+using QuizItEasy.Domain.Common;
 using QuizItEasy.Domain.Entities.Common;
 using QuizItEasy.Domain.Entities.Questions;
 using QuizItEasy.Domain.Entities.QuizCollections;
@@ -30,6 +31,7 @@ public static class ConfigureServices
 
         services.AddSingleton<IMongoClient>(new MongoClient(mongoClientSettings));
         services.AddScoped<IMongoDbContext, MongoDbContext>();
+        services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
 
         services
             .AddHealthChecks()
@@ -45,7 +47,6 @@ public static class ConfigureServices
 
     private static void RegisterEntitiesMongoConfiguration()
     {
-
         BsonClassMap.RegisterClassMap<Entity>(classMap =>
         {
             classMap.AutoMap();
