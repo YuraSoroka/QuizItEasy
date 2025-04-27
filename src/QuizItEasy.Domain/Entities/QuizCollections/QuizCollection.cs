@@ -1,7 +1,9 @@
+using QuizItEasy.Domain.Common;
 using QuizItEasy.Domain.Entities.Common;
 
 namespace QuizItEasy.Domain.Entities.QuizCollections;
 
+[MongoCollectionName("quizCollections")]
 public class QuizCollection : AggregateRoot
 {
     public string Code { get; private set; }

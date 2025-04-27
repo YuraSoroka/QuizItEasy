@@ -3,8 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.IdGenerators;
-using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 using QuizItEasy.Application.Common.Abstractions;
 using QuizItEasy.Domain.Common;
@@ -19,8 +17,17 @@ public static class ConfigureServices
 {
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+
         var mongoConnectionString = configuration.GetConnectionString("Mongo");
         var mongoClientSettings = MongoClientSettings.FromConnectionString(mongoConnectionString);
+
+        mongoClientSettings.ClusterConfigurator = cb =>
+        {
+            cb.Subscribe<MongoDB.Driver.Core.Events.CommandStartedEvent>(e =>
+            {
+                Console.WriteLine($"MongoDB Command Started: {e.CommandName} - {e.Command.ToJson()}");
+            });
+        };
 
         //mongoClientSettings.ClusterConfigurator = c => c.Subscribe(
         //    new DiagnosticsActivityEventSubscriber(
