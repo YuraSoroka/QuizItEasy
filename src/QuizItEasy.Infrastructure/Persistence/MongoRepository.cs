@@ -7,8 +7,8 @@ using QuizItEasy.Domain.Entities.Common;
 
 namespace QuizItEasy.Infrastructure.Persistence;
 
-public sealed class MongoRepository<TDocument>(IMongoDbContext mongoDbContext) 
-    : IMongoRepository<TDocument>  where TDocument : AggregateRoot
+public sealed class MongoRepository<TDocument>(IMongoDbContext mongoDbContext)
+    : IMongoRepository<TDocument> where TDocument : AggregateRoot
 {
     private readonly IMongoCollection<TDocument> _collection = mongoDbContext.GetCollection<TDocument>();
 

@@ -13,10 +13,10 @@ public sealed class MongoDbContext(IMongoClient mongoClient) : IMongoDbContext
     {
         return Database.GetCollection<T>(name ?? GetCollectionName(typeof(T)));
     }
-    
+
     private string GetCollectionName(Type documentType)
     {
-        return ((MongoCollectionNameAttribute) documentType.GetCustomAttributes(
+        return ((MongoCollectionNameAttribute)documentType.GetCustomAttributes(
                 typeof(MongoCollectionNameAttribute),
                 true)
             .FirstOrDefault())?.CollectionName ?? documentType.Name;

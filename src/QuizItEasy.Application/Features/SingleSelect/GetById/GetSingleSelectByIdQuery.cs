@@ -5,7 +5,7 @@ using QuizItEasy.Domain.Entities.Common;
 
 namespace QuizItEasy.Application.Features.SingleSelect.GetById;
 
-public record GetSingleSelectByIdQuery(string Id) 
+public record GetSingleSelectByIdQuery(string Id)
     : IQuery<SingleSelectResponse>;
 
 public class GetSingleSelectByIdQueryHandler(IMongoRepository<Question> questionRepository)
