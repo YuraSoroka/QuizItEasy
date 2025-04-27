@@ -10,7 +10,7 @@ namespace QuizItEasy.Application.Features.QuizCollection.GetAll;
 public record GetQuizCollectionQuery(int PageNumber, int PageSize)
     : IQuery<PagedList<QuizCollectionResponse>>;
 
-public class GetQuizCollectionQueryHandler(IMongoRepository<QuizCollectionItem> quizCollectionRepository) 
+public class GetQuizCollectionQueryHandler(IMongoRepository<QuizCollectionItem> quizCollectionRepository)
     : IQueryHandler<GetQuizCollectionQuery, PagedList<QuizCollectionResponse>>
 {
     public async Task<Result<PagedList<QuizCollectionResponse>>> Handle(GetQuizCollectionQuery request, CancellationToken cancellationToken)
@@ -18,11 +18,11 @@ public class GetQuizCollectionQueryHandler(IMongoRepository<QuizCollectionItem> 
         var source = quizCollectionRepository
             .AsQueryable()
             .ProjectToType<QuizCollectionResponse>();
-        
+
         var pagedResult = await PagedList<QuizCollectionResponse>.CreateAsync(
             source,
             request.PageNumber,
-            request.PageSize, 
+            request.PageSize,
             cancellationToken);
 
         return pagedResult;

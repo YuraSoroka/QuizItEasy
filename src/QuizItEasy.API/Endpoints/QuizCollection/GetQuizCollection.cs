@@ -13,9 +13,9 @@ public sealed class GetQuizCollection : IEndpoint
     {
         app.MapGet("quiz-collections", async (ISender sender, [AsParameters] PaginationModel paginationModel) =>
             {
-                var result = await sender.Send(new GetQuizCollectionQuery(paginationModel.PageNumber, 
+                var result = await sender.Send(new GetQuizCollectionQuery(paginationModel.PageNumber,
                                                                           paginationModel.PageSize));
-                
+
                 return result.Match(Results.Ok, ApiResults.Problem);
             })
             .WithTags(Tags.QuizCollection);

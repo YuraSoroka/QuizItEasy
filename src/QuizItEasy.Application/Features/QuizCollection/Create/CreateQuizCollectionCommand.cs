@@ -9,7 +9,7 @@ public sealed record CreateQuizCollectionCommand(
     string Code)
     : ICommand<string>;
 
-public class CreateQuizCollectionCommandHandler(IMongoRepository<QuizCollectionItem> quizCollectionRepository) 
+public class CreateQuizCollectionCommandHandler(IMongoRepository<QuizCollectionItem> quizCollectionRepository)
     : ICommandHandler<CreateQuizCollectionCommand, string>
 {
     public async Task<Result<string>> Handle(CreateQuizCollectionCommand request, CancellationToken cancellationToken)
