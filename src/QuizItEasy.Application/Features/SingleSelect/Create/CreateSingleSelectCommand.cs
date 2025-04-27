@@ -1,5 +1,4 @@
 using MongoDB.Bson;
-using QuizItEasy.Application.Common.Abstractions;
 using QuizItEasy.Application.Common.Messaging;
 using QuizItEasy.Domain.Common;
 using QuizItEasy.Domain.Entities.Common;
@@ -19,13 +18,11 @@ public sealed record CreateSingleSelectAnswerRequest(
     bool IsCorrect);
 
 
-public class CreateSingleSelectCommandHandler(IMongoDbContext mongoDbContext)
+public class CreateSingleSelectCommandHandler(IMongoRepository<Question> questionRepository)
     : ICommandHandler<CreateSingleSelectCommand, string>
 {
     public async Task<Result<string>> Handle(CreateSingleSelectCommand request, CancellationToken cancellationToken)
     {
-        var collection = mongoDbContext.GetCollection<Question>("AZ-204");
-
         var answers = request.Answers
             .Select(ar => Answer.CreateOption(ar.Value, ar.IsCorrect));
 
@@ -34,9 +31,8 @@ public class CreateSingleSelectCommandHandler(IMongoDbContext mongoDbContext)
             request.QuestionText,
             ObjectId.Parse(request.QuizCollectionId));
 
-        await collection.InsertOneAsync(
-            singleSelectQuestion,
-            cancellationToken: cancellationToken);
+        await questionRepository.InsertOneAsync(
+            singleSelectQuestion);
 
         return Result.Success(singleSelectQuestion.Id.ToString());
     }
