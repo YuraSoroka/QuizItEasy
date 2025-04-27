@@ -19,6 +19,6 @@ public sealed class MongoDbContext(IMongoClient mongoClient) : IMongoDbContext
         return ((MongoCollectionNameAttribute)documentType.GetCustomAttributes(
                 typeof(MongoCollectionNameAttribute),
                 true)
-            .FirstOrDefault())?.CollectionName ?? documentType.Name;
+            .FirstOrDefault())?.CollectionName ?? documentType.Name.ToLower();
     }
 }
