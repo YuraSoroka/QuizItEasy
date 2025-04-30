@@ -7,4 +7,4 @@ public record SingleSelectResponse
     public IEnumerable<SingleSelectAnswerResponse> Answers { get; init; }
 };
 
-public record SingleSelectAnswerResponse(string Value);
+public record SingleSelectAnswerResponse(Guid Id, string Value);
