@@ -5,19 +5,19 @@ using QuizItEasy.Domain.Entities.Common;
 
 namespace QuizItEasy.Application.Features.SingleSelect.GetById;
 
-public record GetSingleSelectByIdQuery(string Id)
-    : IQuery<SingleSelectResponse>;
+public record GetSingleSelectQuestionByIdQuery(string Id)
+    : IQuery<SingleSelectQuestionResponse>;
 
 public class GetSingleSelectByIdQueryHandler(IMongoRepository<Question> questionRepository)
-    : IQueryHandler<GetSingleSelectByIdQuery, SingleSelectResponse>
+    : IQueryHandler<GetSingleSelectQuestionByIdQuery, SingleSelectQuestionResponse>
 {
-    public async Task<Result<SingleSelectResponse>> Handle(
-        GetSingleSelectByIdQuery request,
+    public async Task<Result<SingleSelectQuestionResponse>> Handle(
+        GetSingleSelectQuestionByIdQuery request,
         CancellationToken cancellationToken)
     {
         var singleSelect = await questionRepository
             .FindByIdAsync(request.Id);
 
-        return singleSelect.Adapt<SingleSelectResponse>();
+        return singleSelect.Adapt<SingleSelectQuestionResponse>();
     }
 }

@@ -1,6 +1,6 @@
 namespace QuizItEasy.Application.Features.SingleSelect.GetById;
 
-public record SingleSelectResponse
+public record SingleSelectQuestionResponse
 {
     public string Id { get; init; }
     public string Text { get; init; }

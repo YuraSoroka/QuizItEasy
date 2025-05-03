@@ -4,11 +4,10 @@ using QuizItEasy.API.Common;
 using QuizItEasy.API.Common.Abstractions;
 using QuizItEasy.API.Common.Results;
 using QuizItEasy.Application.Features.SingleSelect.CheckAnswer;
-using QuizItEasy.Application.Features.SingleSelect.Create;
 
 namespace QuizItEasy.API.Endpoints.SingleSelect;
 
-public class CheckSingleSelectAnswer : IEndpoint
+public class CheckSingleSelectAnswerEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
@@ -17,6 +16,6 @@ public class CheckSingleSelectAnswer : IEndpoint
             var result = await sender.Send(new CheckSingleSelectAnswerCommand(questionId, answerId));
             return result.Match(Results.Ok, ApiResults.Problem);
         })
-    .WithTags(Tags.SingleSelect);
+        .WithTags(Tags.SingleSelect);
     }
 }
