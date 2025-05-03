@@ -5,13 +5,13 @@ using QuizItEasy.Domain.Entities.Questions;
 
 namespace QuizItEasy.Application.Features.SingleSelect.CheckAnswer;
 
-public record CheckAnswerCommand(string QuestionId, Guid AnswerId)
+public record CheckSingleSelectAnswerCommand(string QuestionId, Guid AnswerId)
     : ICommand<bool>;
 
 public class CheckAnswerCommandHandler(IMongoRepository<Question> questionRepository)
-    : ICommandHandler<CheckAnswerCommand, bool>
+    : ICommandHandler<CheckSingleSelectAnswerCommand, bool>
 {
-    public async Task<Result<bool>> Handle(CheckAnswerCommand request, CancellationToken cancellationToken)
+    public async Task<Result<bool>> Handle(CheckSingleSelectAnswerCommand request, CancellationToken cancellationToken)
     {
         if (await questionRepository.FindByIdAsync(request.QuestionId) is not SingleSelectQuestion singleSelect)
         {
