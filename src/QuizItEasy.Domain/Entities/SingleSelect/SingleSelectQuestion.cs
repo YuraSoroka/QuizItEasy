@@ -1,5 +1,6 @@
 using MediatR;
 using MongoDB.Bson;
+using QuizItEasy.Domain.Common;
 using QuizItEasy.Domain.Entities.Common;
 
 namespace QuizItEasy.Domain.Entities.Questions;
@@ -20,12 +21,24 @@ public class SingleSelectQuestion : Question
         _answers.AddRange(answers);
     }
 
-    public static SingleSelectQuestion Create(
+    public static Result<SingleSelectQuestion> Create(
         IEnumerable<Answer> answers,
         string text,
         ObjectId quizCollectionId,
         FileMetadata? image = null)
     {
+        var correctAnswers = answers.Where(a => a.IsCorrect);
+
+        if (!correctAnswers.Any())
+        {
+            return Result.Failure<SingleSelectQuestion>(Error.Problem("SingleSelectQuestionError", "Can not create question without correct answer"));
+        }
+
+        if(correctAnswers.Count() > 1)
+        {
+            return Result.Failure<SingleSelectQuestion>(Error.Problem("SingleSelectQuestionError", "Can not create question with more than one correct answer"));
+        }
+
         return new SingleSelectQuestion(
             answers,
             text,

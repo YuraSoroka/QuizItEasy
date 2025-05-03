@@ -3,7 +3,6 @@ using QuizItEasy.Application.Common.Messaging;
 using QuizItEasy.Domain.Common;
 using QuizItEasy.Domain.Entities.Common;
 using QuizItEasy.Domain.Entities.Questions;
-using SingleSelectQuestion = QuizItEasy.Domain.Entities.Questions.SingleSelectQuestion;
 
 namespace QuizItEasy.Application.Features.SingleSelect.Create;
 
@@ -31,9 +30,8 @@ public class CreateSingleSelectCommandHandler(IMongoRepository<Question> questio
             request.QuestionText,
             ObjectId.Parse(request.QuizCollectionId));
 
-        await questionRepository.InsertOneAsync(
-            singleSelectQuestion);
+        await questionRepository.InsertOneAsync(singleSelectQuestion.Value);
 
-        return Result.Success(singleSelectQuestion.Id.ToString());
+        return Result.Success(singleSelectQuestion.Value.Id.ToString());
     }
 }

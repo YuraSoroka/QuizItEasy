@@ -9,6 +9,7 @@ using MongoDB.Driver.Core.Events;
 using QuizItEasy.Application.Common.Abstractions;
 using QuizItEasy.Domain.Common;
 using QuizItEasy.Domain.Entities.Common;
+using QuizItEasy.Domain.Entities.MultiSelect;
 using QuizItEasy.Domain.Entities.Questions;
 using QuizItEasy.Domain.Entities.QuizCollections;
 using QuizItEasy.Infrastructure.Persistence;
@@ -78,7 +79,15 @@ public static class ConfigureServices
             classMap.AutoMap();
             classMap.MapMember(e => e.Answers);
             classMap.SetDiscriminator(nameof(SingleSelectQuestion));
-            classMap.MapCreator(u => SingleSelectQuestion.Create(u.Answers, u.Text, u.QuizCollectionId, u.Image));
+            classMap.MapCreator(u => SingleSelectQuestion.Create(u.Answers, u.Text, u.QuizCollectionId, u.Image).Value);
+        });
+
+        BsonClassMap.RegisterClassMap<MultiSelectQuestion>(classMap =>
+        {
+            classMap.AutoMap();
+            classMap.MapMember(e => e.Answers);
+            classMap.SetDiscriminator(nameof(MultiSelectQuestion));
+            classMap.MapCreator(u => MultiSelectQuestion.Create(u.Answers, u.Text, u.QuizCollectionId, u.Image));
         });
 
         BsonClassMap.RegisterClassMap<QuizCollection>(classMap =>
