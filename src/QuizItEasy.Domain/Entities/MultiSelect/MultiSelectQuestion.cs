@@ -47,6 +47,7 @@ public class MultiSelectQuestion : Question
             .Where(a => a.IsCorrect)
             .Select(a => a.Id);
 
-        return !correctAnswers.Except(answerIds).Any();
+        return new HashSet<Guid>(answerIds)
+            .SetEquals(correctAnswers);
     }
 }
