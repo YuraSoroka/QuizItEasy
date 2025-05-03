@@ -1,15 +1,16 @@
+using MediatR;
 using MongoDB.Bson;
 using QuizItEasy.Domain.Entities.Common;
 
 namespace QuizItEasy.Domain.Entities.Questions;
 
-public class SingleSelect : Question
+public class SingleSelectQuestion : Question
 {
     private readonly List<Answer> _answers = [];
 
     public IReadOnlyCollection<Answer> Answers => _answers.AsReadOnly();
 
-    private SingleSelect(
+    private SingleSelectQuestion(
         IEnumerable<Answer> answers,
         string text,
         ObjectId quizCollectionId,
@@ -19,16 +20,22 @@ public class SingleSelect : Question
         _answers.AddRange(answers);
     }
 
-    public static SingleSelect Create(
+    public static SingleSelectQuestion Create(
         IEnumerable<Answer> answers,
         string text,
         ObjectId quizCollectionId,
         FileMetadata? image = null)
     {
-        return new SingleSelect(
+        return new SingleSelectQuestion(
             answers,
             text,
             quizCollectionId,
             image);
+    }
+
+    public bool IsCorrectAnswer(Guid answerId)
+    {
+        return _answers
+            .Any(a => a.Id == answerId && a.IsCorrect);
     }
 }

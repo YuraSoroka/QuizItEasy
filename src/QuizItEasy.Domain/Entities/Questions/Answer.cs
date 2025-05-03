@@ -1,7 +1,10 @@
+using QuizItEasy.Domain.Entities.Common;
+
 namespace QuizItEasy.Domain.Entities.Questions;
 
-public sealed class Answer
+public sealed class Answer : ValueObject
 {
+    public Guid Id { get; init; } = Guid.NewGuid();
     public bool IsCorrect { get; private set; }
     public string Value { get; private set; }
 
@@ -16,4 +19,9 @@ public sealed class Answer
         return new Answer(value: value, isCorrect: isCorrect);
     }
 
+    public override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return Value;
+        yield return IsCorrect;
+    }
 }

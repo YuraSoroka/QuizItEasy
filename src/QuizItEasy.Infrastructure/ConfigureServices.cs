@@ -3,7 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
+using MongoDB.Driver.Core.Events;
 using QuizItEasy.Application.Common.Abstractions;
 using QuizItEasy.Domain.Common;
 using QuizItEasy.Domain.Entities.Common;
@@ -17,18 +19,6 @@ public static class ConfigureServices
 {
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-
-        var mongoConnectionString = configuration.GetConnectionString("Mongo");
-        var mongoClientSettings = MongoClientSettings.FromConnectionString(mongoConnectionString);
-
-        mongoClientSettings.ClusterConfigurator = cb =>
-        {
-            cb.Subscribe<MongoDB.Driver.Core.Events.CommandStartedEvent>(e =>
-            {
-                Console.WriteLine($"MongoDB Command Started: {e.CommandName} - {e.Command.ToJson()}");
-            });
-        };
-
         //mongoClientSettings.ClusterConfigurator = c => c.Subscribe(
         //    new DiagnosticsActivityEventSubscriber(
         //        new InstrumentationOptions
@@ -36,7 +26,21 @@ public static class ConfigureServices
         //            CaptureCommandText = true
         //        }));
 
-        services.AddSingleton<IMongoClient>(new MongoClient(mongoClientSettings));
+        services.AddSingleton<IMongoClient>(_ =>
+        {
+            var mongoConnectionString = configuration.GetConnectionString("Mongo");
+            var mongoClientSettings = MongoClientSettings.FromConnectionString(mongoConnectionString);
+
+            mongoClientSettings.ClusterConfigurator = cb =>
+            {
+                cb.Subscribe<CommandStartedEvent>(e =>
+                {
+                    Console.WriteLine($"MongoDB Command Started: {e.CommandName} - {e.Command.ToJson()}");
+                });
+            };
+
+            return new MongoClient(mongoClientSettings);
+        });
         services.AddScoped<IMongoDbContext, MongoDbContext>();
         services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
 
@@ -54,6 +58,8 @@ public static class ConfigureServices
 
     private static void RegisterEntitiesMongoConfiguration()
     {
+        BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
+
         BsonClassMap.RegisterClassMap<Entity>(classMap =>
         {
             classMap.AutoMap();
@@ -67,12 +73,12 @@ public static class ConfigureServices
             classMap.MapMember(e => e.Image);
         });
 
-        BsonClassMap.RegisterClassMap<SingleSelect>(classMap =>
+        BsonClassMap.RegisterClassMap<SingleSelectQuestion>(classMap =>
         {
             classMap.AutoMap();
             classMap.MapMember(e => e.Answers);
-            classMap.SetDiscriminator(nameof(SingleSelect));
-            classMap.MapCreator(u => SingleSelect.Create(u.Answers, u.Text, u.QuizCollectionId, u.Image));
+            classMap.SetDiscriminator(nameof(SingleSelectQuestion));
+            classMap.MapCreator(u => SingleSelectQuestion.Create(u.Answers, u.Text, u.QuizCollectionId, u.Image));
         });
 
         BsonClassMap.RegisterClassMap<QuizCollection>(classMap =>
