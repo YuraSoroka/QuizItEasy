@@ -6,7 +6,7 @@ public class SingleSelectResponseMapperConfiguration : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.NewConfig<Domain.Entities.Questions.SingleSelect, SingleSelectResponse>()
+        config.NewConfig<Domain.Entities.Questions.SingleSelectQuestion, SingleSelectResponse>()
             .Map(dest => dest.Text, src => src.Text);
     }
 }

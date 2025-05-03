@@ -7,7 +7,7 @@ using QuizItEasy.Application.Common.Messaging;
 using QuizItEasy.Domain.Common;
 using QuizItEasy.Domain.Entities.Common;
 using QuizItEasy.Domain.Entities.Questions;
-using SingleSelectQuestion = QuizItEasy.Domain.Entities.Questions.SingleSelect;
+using SingleSelectQuestion = QuizItEasy.Domain.Entities.Questions.SingleSelectQuestion;
 
 namespace QuizItEasy.Application.Features.SingleSelect.CheckAnswer;
 public record CheckAnswerCommand(string QuestionId, Guid AnswerId) : ICommand<bool>;

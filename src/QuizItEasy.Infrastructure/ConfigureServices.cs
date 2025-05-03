@@ -73,12 +73,12 @@ public static class ConfigureServices
             classMap.MapMember(e => e.Image);
         });
 
-        BsonClassMap.RegisterClassMap<SingleSelect>(classMap =>
+        BsonClassMap.RegisterClassMap<SingleSelectQuestion>(classMap =>
         {
             classMap.AutoMap();
             classMap.MapMember(e => e.Answers);
-            classMap.SetDiscriminator(nameof(SingleSelect));
-            classMap.MapCreator(u => SingleSelect.Create(u.Answers, u.Text, u.QuizCollectionId, u.Image));
+            classMap.SetDiscriminator(nameof(SingleSelectQuestion));
+            classMap.MapCreator(u => SingleSelectQuestion.Create(u.Answers, u.Text, u.QuizCollectionId, u.Image));
         });
 
         BsonClassMap.RegisterClassMap<QuizCollection>(classMap =>
