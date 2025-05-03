@@ -6,7 +6,7 @@ using QuizItEasy.Domain.Entities.Questions;
 
 namespace QuizItEasy.Application.Features.SingleSelect.Create;
 
-public sealed record CreateSingleSelectCommand(
+public sealed record CreateSingleSelectQuestionCommand(
     string QuestionText,
     string QuizCollectionId,
     IEnumerable<CreateSingleSelectAnswerRequest> Answers
@@ -18,9 +18,9 @@ public sealed record CreateSingleSelectAnswerRequest(
 
 
 public class CreateSingleSelectCommandHandler(IMongoRepository<Question> questionRepository)
-    : ICommandHandler<CreateSingleSelectCommand, string>
+    : ICommandHandler<CreateSingleSelectQuestionCommand, string>
 {
-    public async Task<Result<string>> Handle(CreateSingleSelectCommand request, CancellationToken cancellationToken)
+    public async Task<Result<string>> Handle(CreateSingleSelectQuestionCommand request, CancellationToken cancellationToken)
     {
         var answers = request.Answers
             .Select(ar => Answer.CreateOption(ar.Value, ar.IsCorrect));
