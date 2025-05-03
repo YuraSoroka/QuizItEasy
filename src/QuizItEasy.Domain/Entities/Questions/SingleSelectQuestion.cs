@@ -1,3 +1,4 @@
+using MediatR;
 using MongoDB.Bson;
 using QuizItEasy.Domain.Entities.Common;
 
@@ -30,5 +31,11 @@ public class SingleSelectQuestion : Question
             text,
             quizCollectionId,
             image);
+    }
+
+    public bool IsCorrectAnswer(Guid answerId)
+    {
+        return _answers
+            .Any(a => a.Id == answerId && a.IsCorrect);
     }
 }
