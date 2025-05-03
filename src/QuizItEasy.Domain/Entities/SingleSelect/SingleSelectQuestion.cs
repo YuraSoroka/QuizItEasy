@@ -34,7 +34,7 @@ public class SingleSelectQuestion : Question
             return Result.Failure<SingleSelectQuestion>(Error.Problem("SingleSelectQuestionError", "Can not create question without correct answer"));
         }
 
-        if(correctAnswers.Count() > 1)
+        if (correctAnswers.Count() > 1)
         {
             return Result.Failure<SingleSelectQuestion>(Error.Problem("SingleSelectQuestionError", "Can not create question with more than one correct answer"));
         }
