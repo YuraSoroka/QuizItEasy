@@ -32,6 +32,11 @@ public class CreateMultiSelectQuestionCommandHandler(IMongoRepository<Question> 
             request.QuestionText,
             ObjectId.Parse(request.QuizCollectionId));
 
+        if (multiSelectQuestion.IsFailure)
+        {
+            return Result.Failure<string>(multiSelectQuestion.Error);
+        }
+
         await questionRepository.InsertOneAsync(multiSelectQuestion.Value);
 
         return Result.Success(multiSelectQuestion.Value.Id.ToString());

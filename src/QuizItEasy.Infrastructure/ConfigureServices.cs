@@ -87,7 +87,7 @@ public static class ConfigureServices
             classMap.AutoMap();
             classMap.MapMember(e => e.Answers);
             classMap.SetDiscriminator(nameof(MultiSelectQuestion));
-            classMap.MapCreator(u => MultiSelectQuestion.Create(u.Answers, u.Text, u.QuizCollectionId, u.Image));
+            classMap.MapCreator(u => MultiSelectQuestion.Create(u.Answers, u.Text, u.QuizCollectionId, u.Image).Value);
         });
 
         BsonClassMap.RegisterClassMap<QuizCollection>(classMap =>

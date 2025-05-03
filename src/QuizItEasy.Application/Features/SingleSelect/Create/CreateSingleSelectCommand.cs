@@ -30,6 +30,11 @@ public class CreateSingleSelectCommandHandler(IMongoRepository<Question> questio
             request.QuestionText,
             ObjectId.Parse(request.QuizCollectionId));
 
+        if (singleSelectQuestion.IsFailure)
+        {
+            return Result.Failure<string>(singleSelectQuestion.Error);
+        }
+
         await questionRepository.InsertOneAsync(singleSelectQuestion.Value);
 
         return Result.Success(singleSelectQuestion.Value.Id.ToString());
