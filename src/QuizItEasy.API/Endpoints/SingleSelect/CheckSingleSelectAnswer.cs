@@ -14,7 +14,7 @@ public class CheckSingleSelectAnswer : IEndpoint
     {
         app.MapPost("single-selects/{questionId}/check-answer", async (ISender sender, [FromRoute] string questionId, [FromBody] Guid answerId) =>
         {
-            var result = await sender.Send(new CheckAnswerCommand(questionId, answerId));
+            var result = await sender.Send(new CheckSingleSelectAnswerCommand(questionId, answerId));
             return result.Match(Results.Ok, ApiResults.Problem);
         })
     .WithTags(Tags.SingleSelect);

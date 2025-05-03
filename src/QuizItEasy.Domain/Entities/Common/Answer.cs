@@ -1,6 +1,4 @@
-using QuizItEasy.Domain.Entities.Common;
-
-namespace QuizItEasy.Domain.Entities.Questions;
+namespace QuizItEasy.Domain.Entities.Common;
 
 public sealed class Answer : ValueObject
 {
