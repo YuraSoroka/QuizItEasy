@@ -1,10 +1,8 @@
-﻿using MongoDB.Bson;
-using QuizItEasy.Application.Common.Messaging;
-using QuizItEasy.Application.Features.SingleSelect.Create;
+﻿using QuizItEasy.Application.Common.Messaging;
 using QuizItEasy.Domain.Common;
 using QuizItEasy.Domain.Entities.Common;
 using QuizItEasy.Domain.Entities.MultiSelect;
-using QuizItEasy.Domain.Entities.Questions;
+using QuizCollectionItem = QuizItEasy.Domain.Entities.QuizCollections.QuizCollection;
 
 namespace QuizItEasy.Application.Features.MultiSelect.Create;
 
@@ -19,7 +17,9 @@ public sealed record CreateMultiSelectAnswerRequest(
     bool IsCorrect);
 
 
-public class CreateMultiSelectQuestionCommandHandler(IMongoRepository<Question> questionRepository)
+public class CreateMultiSelectQuestionCommandHandler(
+    IMongoRepository<Question> questionRepository,
+    IMongoRepository<QuizCollectionItem> quizCollectionRepository)
     : ICommandHandler<CreateMultiSelectQuestionCommand, string>
 {
     public async Task<Result<string>> Handle(CreateMultiSelectQuestionCommand request, CancellationToken cancellationToken)
@@ -27,10 +27,11 @@ public class CreateMultiSelectQuestionCommandHandler(IMongoRepository<Question> 
         var answers = request.Answers
             .Select(ar => Answer.CreateOption(ar.Value, ar.IsCorrect));
 
-        var multiSelectQuestion = MultiSelectQuestion.Create(
+        var multiSelectQuestion = await MultiSelectQuestion.Create(
+            quizCollectionRepository,
             answers,
             request.QuestionText,
-            ObjectId.Parse(request.QuizCollectionId));
+            request.QuizCollectionId);
 
         if (multiSelectQuestion.IsFailure)
         {

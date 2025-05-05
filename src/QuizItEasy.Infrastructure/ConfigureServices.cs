@@ -61,39 +61,60 @@ public static class ConfigureServices
     {
         BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
 
-        BsonClassMap.RegisterClassMap<Entity>(classMap =>
+        if (!BsonClassMap.IsClassMapRegistered(typeof(Entity)))
         {
-            classMap.AutoMap();
-            classMap.MapIdMember(e => e.Id);
-        });
+            BsonClassMap.RegisterClassMap<Entity>(classMap =>
+            {
+                classMap.AutoMap();
+                classMap.MapIdMember(e => e.Id);
+            });
+        }
 
-        BsonClassMap.RegisterClassMap<Question>(classMap =>
+        if (!BsonClassMap.IsClassMapRegistered(typeof(Question)))
         {
-            classMap.AutoMap();
-            classMap.MapMember(e => e.Text);
-            classMap.MapMember(e => e.Image);
-        });
+            BsonClassMap.RegisterClassMap<Question>(classMap =>
+            {
+                classMap.AutoMap();
+                classMap.MapMember(e => e.Text);
+                classMap.MapMember(e => e.Image);
+            });
+        }
 
-        BsonClassMap.RegisterClassMap<SingleSelectQuestion>(classMap =>
+        if (!BsonClassMap.IsClassMapRegistered(typeof(SingleSelectQuestion)))
         {
-            classMap.AutoMap();
-            classMap.MapMember(e => e.Answers);
-            classMap.SetDiscriminator(nameof(SingleSelectQuestion));
-            classMap.MapCreator(u => SingleSelectQuestion.Create(u.Answers, u.Text, u.QuizCollectionId, u.Image).Value);
-        });
+            BsonClassMap.RegisterClassMap<SingleSelectQuestion>(classMap =>
+            {
+                classMap.AutoMap();
 
-        BsonClassMap.RegisterClassMap<MultiSelectQuestion>(classMap =>
-        {
-            classMap.AutoMap();
-            classMap.MapMember(e => e.Answers);
-            classMap.SetDiscriminator(nameof(MultiSelectQuestion));
-            classMap.MapCreator(u => MultiSelectQuestion.Create(u.Answers, u.Text, u.QuizCollectionId, u.Image).Value);
-        });
+                classMap
+                    .MapField("_answers")
+                    .SetElementName("Answers");
 
-        BsonClassMap.RegisterClassMap<QuizCollection>(classMap =>
+                classMap.SetDiscriminator(nameof(SingleSelectQuestion));
+            });
+        }
+
+        if (!BsonClassMap.IsClassMapRegistered(typeof(MultiSelectQuestion)))
         {
-            classMap.AutoMap();
-        });
+            BsonClassMap.RegisterClassMap<MultiSelectQuestion>(classMap =>
+            {
+                classMap.AutoMap();
+
+                classMap
+                    .MapField("_answers")
+                    .SetElementName("Answers");
+
+                classMap.SetDiscriminator(nameof(MultiSelectQuestion));
+            });
+        }
+
+        if (!BsonClassMap.IsClassMapRegistered(typeof(QuizCollection)))
+        {
+            BsonClassMap.RegisterClassMap<QuizCollection>(classMap =>
+            {
+                classMap.AutoMap();
+            });
+        }
     }
 }
 

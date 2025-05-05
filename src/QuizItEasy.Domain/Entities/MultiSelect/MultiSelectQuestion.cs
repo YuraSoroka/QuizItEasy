@@ -2,12 +2,15 @@
 using QuizItEasy.Domain.Common;
 using QuizItEasy.Domain.Entities.Common;
 using QuizItEasy.Domain.Entities.Questions;
+using QuizItEasy.Domain.Entities.QuizCollections;
 
 namespace QuizItEasy.Domain.Entities.MultiSelect;
 
 public class MultiSelectQuestion : Question
 {
-    private readonly List<Answer> _answers = [];
+#pragma warning disable IDE0044 // Add readonly modifier
+    private List<Answer> _answers = [];
+#pragma warning restore IDE0044 // Add readonly modifier
 
     public IReadOnlyCollection<Answer> Answers => _answers.AsReadOnly();
 
@@ -21,12 +24,19 @@ public class MultiSelectQuestion : Question
         _answers.AddRange(answers);
     }
 
-    public static Result<MultiSelectQuestion> Create(
+    public static async Task<Result<MultiSelectQuestion>> Create(
+        IMongoRepository<QuizCollection> quizColletionRepository,
         IEnumerable<Answer> answers,
         string text,
-        ObjectId quizCollectionId,
+        string quizCollectionId,
         FileMetadata? image = null)
     {
+        var collection = await quizColletionRepository.FindByIdAsync(quizCollectionId);
+        if (collection is null)
+        {
+            return Result.Failure<MultiSelectQuestion>(Error.NotFound("QuizCollectionNotFound", "Quiz collection not found"));
+        }
+
         var correctAnswers = answers.Where(a => a.IsCorrect);
 
         if (correctAnswers.Count() < 2)
@@ -37,7 +47,7 @@ public class MultiSelectQuestion : Question
         return new MultiSelectQuestion(
             answers,
             text,
-            quizCollectionId,
+            ObjectId.Parse(quizCollectionId),
             image);
     }
 
