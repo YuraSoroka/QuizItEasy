@@ -1,6 +1,5 @@
 ﻿using Mapster;
 using QuizItEasy.Application.Common.Messaging;
-using QuizItEasy.Application.Features.SingleSelect.GetById;
 using QuizItEasy.Domain.Common;
 using QuizItEasy.Domain.Entities.Common;
 
