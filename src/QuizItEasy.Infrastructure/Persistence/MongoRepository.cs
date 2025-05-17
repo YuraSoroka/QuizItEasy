@@ -30,6 +30,22 @@ public sealed class MongoRepository<TDocument>(IMongoDbContext mongoDbContext)
         return _collection.Find(filterExpression).Project(projectionExpression).ToEnumerable();
     }
 
+    public Task<IEnumerable<TDocument>> GetAllPaginatedAsync(
+        Expression<Func<TDocument, bool>> filterExpression,
+        int pageNumber,
+        int pageSize)
+    {
+        return Task.Run(async () =>
+        {
+            await Task.Delay(1500);
+            var skip = (pageNumber - 1) * pageSize;
+            return _collection.Find(filterExpression)
+                .Skip(skip)
+                .Limit(pageSize)
+                .ToEnumerable();
+        });
+    }
+
     public TDocument FindOne(Expression<Func<TDocument, bool>> filterExpression)
     {
         return _collection.Find(filterExpression).FirstOrDefault();

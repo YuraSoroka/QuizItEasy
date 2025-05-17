@@ -7,7 +7,7 @@ using QuizItEasy.Application.Features.QuizCollection.GetAll;
 
 namespace QuizItEasy.API.Endpoints.QuizCollection;
 
-public sealed class GetQuizCollectionEndpoint : IEndpoint
+public sealed class GetQuizCollectionsEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
