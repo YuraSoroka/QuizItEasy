@@ -50,10 +50,7 @@ public sealed class MongoRepository<TDocument>(IMongoDbContext mongoDbContext)
             query = query.Skip(specification.Skip.Value).Take(specification.Take.Value);
         }
 
-        return Task.Run(() => {
-            Console.WriteLine(Thread.CurrentThread.ManagedThreadId + " FindBySpecificationAsync operation");
-            return query.AsEnumerable();
-        });
+        return Task.Run(() => query.AsEnumerable());
     }
 
 
