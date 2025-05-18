@@ -18,10 +18,7 @@ public interface IMongoRepository<TDocument> where TDocument : AggregateRoot
 
     Task<TDocument> FindOneAsync(Expression<Func<TDocument, bool>> filterExpression);
 
-    Task<IEnumerable<TDocument>> GetAllPaginatedAsync(
-        Expression<Func<TDocument, bool>> filterExpression,
-        int pageNumber,
-        int pageSize);
+    Task<IEnumerable<TDocument>> FindBySpecificationAsync(Specification<TDocument> specification);
 
     TDocument FindById(string id);
 

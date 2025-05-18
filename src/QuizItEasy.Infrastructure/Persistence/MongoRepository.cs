@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Linq.Expressions;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -30,21 +31,28 @@ public sealed class MongoRepository<TDocument>(IMongoDbContext mongoDbContext)
         return _collection.Find(filterExpression).Project(projectionExpression).ToEnumerable();
     }
 
-    public Task<IEnumerable<TDocument>> GetAllPaginatedAsync(
-        Expression<Func<TDocument, bool>> filterExpression,
-        int pageNumber,
-        int pageSize)
+    public Task<IEnumerable<TDocument>> FindBySpecificationAsync(Specification<TDocument> specification)
     {
-        return Task.Run(async () =>
+        var query = _collection.AsQueryable();
+
+        if (specification.Criteria != null)
         {
-            await Task.Delay(1500);
-            var skip = (pageNumber - 1) * pageSize;
-            return _collection.Find(filterExpression)
-                .Skip(skip)
-                .Limit(pageSize)
-                .ToEnumerable();
-        });
+            query = query.Where(specification.Criteria);
+        }
+
+        if (specification.OrderBy != null)
+        {
+            query = specification.OrderBy(query);
+        }
+
+        if (specification.Skip.HasValue && specification.Take.HasValue)
+        {
+            query = query.Skip(specification.Skip.Value).Take(specification.Take.Value);
+        }
+
+        return Task.Run(() => query.AsEnumerable());
     }
+
 
     public TDocument FindOne(Expression<Func<TDocument, bool>> filterExpression)
     {
