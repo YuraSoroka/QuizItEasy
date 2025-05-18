@@ -5,6 +5,7 @@ using QuizItEasy.Application.Common.Services;
 using QuizItEasy.Domain.Common;
 using QuizItEasy.Domain.Common.Extensions;
 using QuizItEasy.Domain.Entities.Common;
+using QuizItEasy.Domain.Specifications;
 
 namespace QuizItEasy.Application.Features.Questions.GetAll;
 
@@ -25,13 +26,11 @@ public class GetCollectionQuestionsQueryHandler(
     {
         var collectionId = request.CollectionId.AsObjectId();
 
-        var questionsTask = questionMongoRepository.GetAllPaginatedAsync(
-            q => q.QuizCollectionId.Equals(collectionId),
-            request.PageNumber,
-            request.PageSize);
+        var questionsTask = questionMongoRepository.FindBySpecificationAsync(
+            new QuestionSpecification(collectionId, request.PageNumber, request.PageSize));
 
         var countTask = Task.Run(() => questionMongoRepository.AsQueryable()
-                .Count(q => q.QuizCollectionId.Equals(collectionId)));
+                    .Count(q => q.QuizCollectionId.Equals(collectionId)));
 
         await Task.WhenAll(questionsTask, countTask);
 
