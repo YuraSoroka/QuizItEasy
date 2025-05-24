@@ -21,6 +21,6 @@ internal class SingleSelectQuestionResolver : IQuestionToJsonResolver
 
         var singleSelectResponse = singleSelectQuestion.Adapt<SingleSelectQuestionResponse>();
 
-        return new QuestionResponse(QuestionDiscriminator, JsonSerializer.Serialize(singleSelectResponse));
+        return new QuestionResponse(QuestionDiscriminator, JsonSerializer.Serialize(singleSelectResponse, JsonDefaults.Options));
     }
 }
