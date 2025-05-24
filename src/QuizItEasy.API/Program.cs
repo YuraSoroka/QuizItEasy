@@ -1,3 +1,4 @@
+using System.Text.Json;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using QuizItEasy.API.Common.Extensions;
@@ -19,6 +20,11 @@ builder.Services.AddEndpoints(QuizItEasy.API.AssemblyReference.Assembly);
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy => policy.WithOrigins("http://localhost:4200"));
+});
+
+builder.Services.ConfigureHttpJsonOptions(options => {
+    options.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    options.SerializerOptions.WriteIndented = true;
 });
 
 var app = builder.Build();

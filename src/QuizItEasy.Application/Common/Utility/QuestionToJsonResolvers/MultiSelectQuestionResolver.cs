@@ -21,6 +21,6 @@ internal class MultiSelectQuestionResolver : IQuestionToJsonResolver
 
         var multiSelectResponse = multiSelectQuestion.Adapt<MultiSelectQuestionResponse>();
 
-        return new QuestionResponse(QuestionDiscriminator, JsonSerializer.Serialize(multiSelectResponse));
+        return new QuestionResponse(QuestionDiscriminator, JsonSerializer.Serialize(multiSelectResponse, JsonDefaults.Options));
     }
 }
