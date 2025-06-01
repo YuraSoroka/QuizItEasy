@@ -18,7 +18,10 @@ builder.Services.AddEndpoints(QuizItEasy.API.AssemblyReference.Assembly);
 
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(policy => policy.WithOrigins("http://localhost:4200"));
+    options.AddDefaultPolicy(policy => policy
+        .WithOrigins("http://localhost:4200")
+        .AllowAnyMethod()
+        .AllowAnyHeader());
 });
 
 var app = builder.Build();

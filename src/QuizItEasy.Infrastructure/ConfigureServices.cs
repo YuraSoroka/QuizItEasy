@@ -1,3 +1,4 @@
+using Azure.Storage.Blobs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -7,12 +8,14 @@ using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 using MongoDB.Driver.Core.Events;
 using QuizItEasy.Application.Common.Abstractions;
+using QuizItEasy.Application.Common.Services;
 using QuizItEasy.Domain.Common;
 using QuizItEasy.Domain.Entities.Common;
 using QuizItEasy.Domain.Entities.MultiSelect;
 using QuizItEasy.Domain.Entities.Questions;
 using QuizItEasy.Domain.Entities.QuizCollections;
 using QuizItEasy.Infrastructure.Persistence;
+using QuizItEasy.Infrastructure.Storage;
 
 namespace QuizItEasy.Infrastructure;
 
@@ -42,7 +45,10 @@ public static class ConfigureServices
 
             return new MongoClient(mongoClientSettings);
         });
+
+        services.AddSingleton<BlobServiceClient>(_ => new BlobServiceClient(configuration.GetConnectionString("AzureStorageAccount")));
         services.AddScoped<IMongoDbContext, MongoDbContext>();
+        services.AddScoped<IBlobStorageService, BlobStorageService>();
         services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
 
         services
